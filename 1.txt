@@ -1,0 +1,20 @@
+SELECT email, COUNT(email) as count_dublicates
+FROM Staff
+GROUP BY email
+HAVING COUNT(email) > 1;
+
+SELECT
+  birthday,
+  (
+    (YEAR(CURRENT_DATE) - YEAR(birthday)) -                             
+    (DATE_FORMAT(CURRENT_DATE, '%m%d') < DATE_FORMAT(birthday, '%m%d'))
+  ) AS age
+FROM Staff
+
+SELECT j.name as name_jobtitles, MAX(s.salary) AS second_salary
+FROM Staff s
+JOIN Jobtitles j ON s.jobtitle_id = j.jobtitle_id
+WHERE s.salary < (SELECT MAX(salary) FROM Staff)
+GROUP BY j.name
+ORDER BY second_salary DESC
+LIMIT 1;
